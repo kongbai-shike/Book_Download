@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书下载站</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <!-- 横幅区域 -->
+            <banner-section 
+                :is-logged-in="isLoggedIn"
+                :username="username"
+                @show-login="showLoginModal = true"
+                @show-register="showRegisterModal = true"
+                @logout="logout">
+            </banner-section>
+            
+            <!-- 主要内容区域 -->
+            <div class="main-content">
+                <!-- 推荐榜区域 -->
+                <recommendations-section
+                    :books="recommendedBooks"
+                    :selected-book="selectedBook"
+                    @select-book="selectBook">
+                </recommendations-section>
+                
+                <!-- 右侧区域 -->
+                <div class="right-content">
+                    <!-- 搜索区域 -->
+                    <search-section
+                        :search-type="searchType"
+                        :search-keyword="searchKeyword"
+                        @update:searchType="searchType = $event"
+                        @update:searchKeyword="searchKeyword = $event"
+                        @search="search">
+                    </search-section>
+                    
+                    <!-- 详情区域 -->
+                    <details-section
+                        :is-logged-in="isLoggedIn"
+                        :selected-book="selectedBook"
+                        :search-results="searchResults"
+                        @download-book="downloadBook"
+                        @select-book="selectBook">
+                    </details-section>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 登录模态框 -->
+        <login-modal
+            v-if="showLoginModal"
+            @login="login"
+            @close="showLoginModal = false">
+        </login-modal>
+        
+        <!-- 注册模态框 -->
+        <register-modal
+            v-if="showRegisterModal"
+            @register="register"
+            @close="showRegisterModal = false">
+        </register-modal>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
